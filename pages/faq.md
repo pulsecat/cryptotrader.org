@@ -1,6 +1,8 @@
-## General 
+## General
 
-## Strategy market
+## Backtesting / Live Trading
+
+## Strategy Market
 
 ## Coding
 
