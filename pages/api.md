@@ -34,7 +34,7 @@ Called on each tick according to the tick interval that was set (e.g 1 hour)
       **Example:**
           `debug new Date(data.at) # Logs current timestamp`
 
-    - data.instruments - array of instrument objects (see Instrument object below)
+    - data.instruments - array of instrument objects (see Instrument object below) **Currenly only single instrument object is supported**
     - data.portfolio - Portfolio object (see below)  
 
   - storage
@@ -74,6 +74,16 @@ An optional handler that will be called upon a simulation completes
 
 
 ### Global methods and interfaces
+
+#### Portfolio 
+  The portfolio is a dictionary object with positions information.
+
+**Example**
+
+    btcAmount = portfolio.positions['btc'].amount
+    usdAmount = portfolio.positions['usd'].amount
+  
+
 #### buy(instrument,[amount],[price],[timeout])
 This method simulates/executes a purchase of specified asset. If **amount** parameter is missing or null, spends all funds available.
 
@@ -108,6 +118,8 @@ if a sell was executed portfolio structure will be updated and [order] object is
     if sell instrument,null,instrument.price * 0.95,60
       debug 'SELL order traded'
 
+The orders created by buy/sell function are *auto orders* and get automatically cancelled by the engine when the next tick occurs.
+If you need more control over how orders are placed/processed or create multple orders, see Advanced Orders section below.
 
 #### debug(msg), info(msg), warn(msg)
 Logs message with specified log level 
@@ -158,6 +170,7 @@ Logs message with specified log level
           color: 'deeppink'
           lineWidth: 5
 
+
 #### talib
   The interface to Ta-lib library (http://ta-lib.org/), which contains 125+ indicators for technical analysis.
   [TA-Lib Functions (Index)](/talib)
@@ -172,7 +185,6 @@ Logs message with specified log level
       endIdx: instrument.close.length-1
       inReal: instrument.close
       optInTimePeriod: 10
-
 
 
 ### Instrument object
@@ -254,6 +266,28 @@ The object that provides access to current trading data and technical indicators
     if result
       debug "MACD=#{result.macd} Signal=#{result.signal} Histogram=#{result.histogram}"
 
+### Advanced orders 
+This set of functions gives more control over how orders are being processed:
+
+####addOrder(instrument, type, amount, price, timeout)
+
+Submits a new order with given type ("buy" or "sell") and returns an object containing information about order:
+
+  - id - unique orderId. Note that id can be missing if the order was filled instantly.
+  - active - true if the order is still active
+  - cancelled - true if the order was cancelled
+  - filled - true if the order was traded
+
+The engine automatically tracks all active orders and update their statuses before a new tick or when a timeout occurs.
+
+####getOrder(orderId)
+
+Returns an order object by given id.
+
+####cancelOrder(order)
+
+Cancels an order
+
 ### Alerts
   Alerts functionality allows email messages to be sent from your code. 
 
@@ -280,8 +314,25 @@ The object that provides access to current trading data and technical indicators
       if sell instrument
         sendSMS "SOLD at #{instument.ticker.buy}"
 
+### User interaction
+
+The functionality allows to create bots that take some user input at runtime. 
+
+####askParam title, defaultValue
+
+In order to pass parameters to your strategy, add askParam method call to the top of the code, like in the example below:
+
+    STOP_LOSS = askParam 'Stop Loss',100 # default value is 100
+    MARKET_ORDER = askParam 'Market Order',false # will be displayed as checkbox
+    MODE = askParam 'a) Low risk b) Aggressive','a' # can be a string value
+
+
+Also check the implementation of Stop-Loss script that takes user's input:
+
+https://cryptotrader.org/strategies/KWbNeR3CcMQp8SHkH
+
+
 ##Links
 
   - [TA-Lib : Technical Analysis Library](http://ta-lib.org)
   - [TA-Lib Functions (Index)](/talib)
-
