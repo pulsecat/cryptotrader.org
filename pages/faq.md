@@ -10,7 +10,7 @@ We offer a comprehensive cloud-based solution, which requires no installation of
 
 ### Do i need coding skills to use your service?
 
-Some minimum programming experience will be needed, if you want to create your own strategies. Alternatively, our strategy market section provides free and paid strategies, many of them are developed by professional traders.
+  Some minimum programming experience will be needed, if you want to create your own strategies. Alternatively, our strategy market section provides a variety of free and paid strategies, many of which are developed by professional traders.
 
 ### How do i deposit funds into my account here?
 
