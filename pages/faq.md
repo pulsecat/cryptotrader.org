@@ -2,7 +2,7 @@
 
 ### What is Cryptotrader?
 
-Cryptotrader is an algorithmic trading platform for cryptocurrencies that allows to automate your trading strategies via flexible built-in scripting language based on Coffeescript.
+Cryptotrader is an algorithmic trading platform for cryptocurrencies that allows to automate your trading strategies via flexible built-in scripting language based on [Coffeescript](http://coffeescript.org/).
 
 ### Is installation of any software/plugins required?
 
