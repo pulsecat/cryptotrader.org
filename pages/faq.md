@@ -1,10 +1,21 @@
-## General
+##General
 
-## Backtesting / Live Trading
+### What is Cryptotrader?
 
-## Strategy Market
+Cryptotrader is an algorithmic trading platform for cryptocurrencies that allows to automate your trading strategies via flexible built-in scripting language based on Coffeescript.
 
-## Coding
+### Is installation of any software/plugins required?
 
-## Affiliate Program
+We offer a comprehensive cloud-based solution, which requires no installation of any software. Bots are running in our scalable VPS cloud 24/7.
 
+### Do i need coding skills to use your service?
+
+Some minimum programming experience will be needed, if you want to create your own strategies. Alternatively, our strategy market section provides free and paid strategies, many of them are developed by professional traders.
+
+### How do i deposit funds into my account here?
+
+We do not hold your funds or have access to them. Trades are placed on your behalf on an exchange of your choice.
+
+### How can I make sure my funds are safe?
+
+Bots connect to your exchange account through API keys that do not have permission to withdraw funds.
