@@ -19,3 +19,9 @@ We do not hold your funds or have access to them. Trades are placed on your beha
 ### How can I make sure my funds are safe?
 
 Bots connect to your exchange account through API keys that do not have permission to withdraw funds.
+
+Strategy Market
+
+### When i rent a premium strategy, how many bot instances can i run on my account with this strategy?
+You can run as many bot instances as your subscription allows.
+
