@@ -23,8 +23,8 @@ Bots connect to your exchange account through API keys that do not have permissi
 ##Strategy Market
 
 #### Why do i have to pay both for my subscription and rental fee for bot?
-Primarily, Cryptotrader is an algorithmic trading platform that allows to run your own trading strategies and we charge for cloud resources allocated for bots. The Strategy Market was built on top of the platform to allow experienced bot developers to make some profit by renting out their trading strategies.
+Primarily, Cryptotrader is an algorithmic trading platform that allows to run your own trading strategies and we charge for cloud resources allocated for bots. The Strategy Market was built on top of the platform to allow experienced bot developers to make profit by renting out their trading strategies.
 
 #### When i rent a premium strategy, how many bot instances can i run on my account with this strategy?
-You can run as many bot instances as your subscription allows.
+With a rented strategy, you can run as many bot instances as your subscription allows.
 
