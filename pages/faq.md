@@ -21,7 +21,9 @@ We do not hold your funds or have access to them. Trades are placed on your beha
 Bots connect to your exchange account through API keys that do not have permission to withdraw funds.
 
 ##Strategy Market
-
+#### What is strategy popularity?
+  The strategy rating is a relative number representing number of live instances that currently trade with this particular strategy for real money. E.g a strategy with rating 50% is being rented twice less often than a strategy with 100% rating.
+  
 #### Why do i have to pay both for my subscription and rental fee for bot?
 Primarily, Cryptotrader is an algorithmic trading platform that allows to run your own trading strategies and we charge for cloud resources allocated for bots. The Strategy Market was built on top of the platform to allow experienced bot developers to make profit by renting out their trading strategies.
 
