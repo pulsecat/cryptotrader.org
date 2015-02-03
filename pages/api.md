@@ -170,7 +170,9 @@ Logs message with specified log level
           color: 'deeppink'
           lineWidth: 5
 
-
+#### stop
+  The method immediately stops script execution and updates the log with the resulting balance.
+  
 #### talib
   The interface to Ta-lib library (http://ta-lib.org/), which contains 125+ indicators for technical analysis.
   [TA-Lib Functions (Index)](/talib)
