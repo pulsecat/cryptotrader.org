@@ -126,10 +126,11 @@ Allows to access market depth data for current market. The function returns an o
 
 **Example**
 
-    # find the price for which 1 BTC can be bought/sold.
+    # find the price for which 1 BTC can be bought.
     orderBook = getOrderBook()
     volume = 1
     if orderBook
+        # logs the whole order book
         for key in ['asks','bids']
             debug "#{key}: #{orderBook[key].join(',')}"
         sum = 0
