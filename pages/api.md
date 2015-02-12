@@ -125,6 +125,7 @@ If you need more control over how orders are placed/processed or create multple 
 Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
 
 **Example**
+
     # find the price for which 1 BTC can be bought/sold.
     orderBook = getOrderBook()
     volume = 1
