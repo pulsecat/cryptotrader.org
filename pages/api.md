@@ -121,6 +121,27 @@ if a sell was executed portfolio structure will be updated and [order] object is
 The orders created by buy/sell function are *auto orders* and get automatically cancelled by the engine when the next tick occurs.
 If you need more control over how orders are placed/processed or create multple orders, see Advanced Orders section below.
 
+#### getOrderBook() (only Live mode)
+Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
+
+**Example**
+    # find the price for which 1 BTC can be bought/sold.
+    orderBook = getOrderBook()
+    volume = 1
+    if orderBook
+        for key in ['asks','bids']
+            debug "#{key}: #{orderBook[key].join(',')}"
+        sum = 0
+        for o in orderBook.asks
+            sum += o[1]
+            if sum >= volume
+                debug "#{volume} BTC can be bought for #{o[0]}"
+                break
+    else
+     debug "orderbook can't be accessed" 
+       
+Note that in backtesting mode the method returns a null value.
+
 #### debug(msg), info(msg), warn(msg)
 Logs message with specified log level 
    
