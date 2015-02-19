@@ -1,6 +1,6 @@
 ## Overview
-Welcome to **Cryptotrader.org API**. We aim to provide an API that allows developer to write 
-fully featured trading algorithms. Our automated trading platform can backtest and execute trading scripts coded in CoffeeScript language on historical data.
+Welcome to **Cryptotrader.org API**. We aim to provide an API that allows developers to write 
+fully featured trading algorithms. Our automated trading platform can backtest and execute trading scripts coded in CoffeeScript on historical data.
 
 
 ## Trading API
@@ -67,7 +67,7 @@ An optional handler that will be called upon a simulation completes
       context.volume = 0
 
     handle: (contex,data)->
-      context.volume += data.btc_usd.volume
+      context.volume += data.instrument[0].volume
 
     finalize: (contex)->
       debug "Total volume: #{context.volume}"
@@ -87,12 +87,12 @@ An optional handler that will be called upon a simulation completes
 #### buy(instrument,[amount],[price],[timeout])
 This method simulates/executes a purchase of specified asset. If **amount** parameter is missing or null, spends all funds available.
 
-**Limit Orders**
+**Buy Limit Orders**
 
-if *price* is specified, the method will submit an order to buy at a specified price or better.
+If *price* is specified, the method will submit an order to buy at a specified price or better.
 *timeout* parameter allows to limit the length of time in seconds an order can be outstanding before being canceled. 
 
-if a buy was executed portfolio structure will be updated and [order] object is returned. 
+If a buy was executed portfolio structure will be updated and order object (see [Advanced orders](#advanced-orders)) is returned. 
 
 **Example:**
 
@@ -104,12 +104,12 @@ if a buy was executed portfolio structure will be updated and [order] object is 
 #### sell(instrument,[amount],[price],[timeout])
 This method simulates/executes selling specified asset. If **amount** parameter is missing or null, sell everything.
 
-**Limit Orders**
+**Sell Limit Orders**
 
-if *price* is specified, the method will submit an order to sell at a specified price or better.
-*timeout* parameter allows to limit the length of time in seconds an order can be outstanding before being canceled. 
+If *price* is specified, the method will submit an order to sell at a specified price or better.
+*timeout* parameter allows to limit the length of time in seconds an order can be outstanding before being canceled.
 
-if a sell was executed portfolio structure will be updated and [order] object is returned. 
+If a sell was executed, portfolio structure will be updated and order object (see [Advanced orders](#advanced-orders)) is returned. 
 
 **Example:**
 
@@ -119,7 +119,7 @@ if a sell was executed portfolio structure will be updated and [order] object is
       debug 'SELL order traded'
 
 The orders created by buy/sell function are *auto orders* and get automatically cancelled by the engine when the next tick occurs.
-If you need more control over how orders are placed/processed or create multple orders, see Advanced Orders section below.
+If you need more control over how orders are placed/processed or create multple orders, see [Advanced orders](#advanced-orders) section below.
 
 #### getOrderBook() (only Live mode)
 Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
@@ -147,12 +147,12 @@ Note that in backtesting mode the method returns a null value.
 #### debug(msg), info(msg), warn(msg)
 Logs message with specified log level 
    
-#### _
+#### _ [underscore library]
   The binding to Underscore library (http://underscorejs.org/) which has many helper functions
   
 **Example**
 
-    debug _.max(data.btc_usd.high.splice(-24)) # Prints maximum high for last 24 periods
+    debug _.max(instrument.high.splice(-24)) # Prints maximum high for last 24 periods
 
 #### plot(series)
   Records data to be shown on the chart as line graphs. Series is a dictionary object that includes key and value pairs.
@@ -204,7 +204,7 @@ Logs message with specified log level
 **Example**
 
     # Calculate SMA(10) using ta-lib API
-    instrument = data.btc_usd
+    instrument = data.instrument[0]
     value = talib.SMA
       startIdx: 0 
       endIdx: instrument.close.length-1
@@ -225,7 +225,7 @@ The object that provides access to current trading data and technical indicators
   
 **Example:**
 
-    instrument = data.btc_usd
+    instrument = data.instrument[0]
     debug instrument.high[instrument.high.length-1] # Displays current High value
 
 #### market 
@@ -252,12 +252,12 @@ The object that provides access to current trading data and technical indicators
 
   This function is a shortcut for the following code:
 
-    instrument = data.btc_usd
+    instrument = data.instrument[0]
     result = talib.EMA
       startIdx: 0 
       endIdx: instrument.close.length-1
       inReal: instrument.close
-      optInTimePeriod: period
+      optInTimePeriod: instrument.period
     value = _.last(result)
 
 #### macd(fastPeriod,slowPeriod,signalPeriod)
@@ -294,7 +294,7 @@ The object that provides access to current trading data and technical indicators
 ### Advanced orders 
 This set of functions gives more control over how orders are being processed:
 
-####addOrder(instrument, type, amount, price, timeout)
+#### addOrder(instrument, type, amount, price, timeout)
 
 Submits a new order with given type ("buy" or "sell") and returns an object containing information about order:
 
@@ -305,13 +305,13 @@ Submits a new order with given type ("buy" or "sell") and returns an object cont
 
 The engine automatically tracks all active orders and update their statuses before a new tick or when a timeout occurs.
 
-####getOrder(orderId)
+#### getOrder(orderId)
 
 Returns an order object by given id.
 
-####cancelOrder(order)
+#### cancelOrder(order)
 
-Cancels an order
+Cancels an order.
 
 ### Alerts
   Alerts functionality allows email messages to be sent from your code. 
@@ -324,7 +324,7 @@ Cancels an order
     # simple price alert
     handle: (contex,data)->
       ...
-      if data.btc_usd.price >= 100
+      if data.instrument[0].price >= 100
         sendEmail 'The price hit $100'
   
 #### sendSMS(message) [Live mode] [Pro and VIP users]
@@ -343,7 +343,7 @@ Cancels an order
 
 The functionality allows to create bots that take some user input at runtime. 
 
-####askParam title, defaultValue
+#### askParam title, defaultValue
 
 In order to pass parameters to your strategy, add askParam method call to the top of the code, like in the example below:
 
@@ -357,7 +357,7 @@ Also check the implementation of Stop-Loss script that takes user's input:
 https://cryptotrader.org/strategies/KWbNeR3CcMQp8SHkH
 
 
-##Links
+## Links
 
   - [TA-Lib : Technical Analysis Library](http://ta-lib.org)
   - [TA-Lib Functions (Index)](/talib)
