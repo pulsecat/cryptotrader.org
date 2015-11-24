@@ -1,3 +1,4 @@
+
 ##General
 
 #### What is Cryptotrader?
@@ -19,6 +20,7 @@ We do not hold your funds or have access to them. Trades are placed on your beha
 #### How can I make sure my funds are safe?
 
 Bots connect to your exchange account through API keys that do not have permission to withdraw funds.
+
 
 ##Strategy Market
 #### What is strategy popularity?
