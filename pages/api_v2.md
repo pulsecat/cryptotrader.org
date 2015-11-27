@@ -250,7 +250,7 @@ This method executes a purchase of specified asset.
       if mt.buy instrument,info.tradable_balance/instrument.price,instrument.price
         debug 'BUY order traded'
 
-#### sell(instrument,[amount],[price],[timeout])
+##### sell(instrument,[amount],[price],[timeout])
 This method executes a sale of specified asset. 
 
 **Example:**
@@ -269,7 +269,7 @@ This method executes a sale of specified asset.
 
 This set of functions gives more control over how orders are being processed:
 
-#### addOrder(order)
+##### addOrder(order)
 
 Submits a new order and returens an object containing information about order
 
@@ -303,21 +303,21 @@ The engine automatically tracks all active orders and peridically update their s
         else
         	debug "Order fulfilled"
 
-#### getActiveOrders
+##### getActiveOrders
 Returns the list of currently open orders
 
-#### getOrder(orderId)
+##### getOrder(orderId)
 
 Returns an order object by given id.
 
-#### cancelOrder(order)
+##### cancelOrder(order)
 
 Cancels an order.
 
-#### linkOrder(orderA,orderB)
+##### linkOrder(orderA,orderB)
 Links orders so when one of them is cancelled or closed, the other one will be cancelled automatically.
 
-#### getOrderBook(instrument) (only Live mode)
+##### getOrderBook(instrument) (only Live mode)
 
 Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
 
