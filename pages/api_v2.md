@@ -46,7 +46,7 @@ provides access to current trading environment
 #### @storage 
 the object is used to persist variable data in the database that is essential for developing reliable algorithms. In the case if an instance is interrupted unexpectedly, the storage object will be restored from the database to the last state. Do not use to store complex objects such as classes and large amounts for data (> 64kb).
 
-  **Example:**
+**Example:**
 
           handle: ->
             ...
@@ -69,7 +69,7 @@ the object is used to persist variable data in the database that is essential fo
 This hook method is called when the bot stops
 
 
-**Example**
+**Example:**
 
     onStop: ->  
     	debug "The bot will be stopped"
@@ -122,7 +122,7 @@ Logs message with specified log level
 #### plot(series)
   Records data to be shown on the chart as line graphs. Series is a dictionary object that includes key and value pairs.
 
-**Example**
+**Example:**
 
     # draw moving averages on the chart
     plot
@@ -132,7 +132,7 @@ Logs message with specified log level
 #### plotMark(marks)
   Similar to plot method, but adds a marker that displays events on the charts.
 
-**Example**
+**Example:**
 
     high = _.last instrument.high
     if high > maxPrice
@@ -147,7 +147,7 @@ Logs message with specified log level
   - lineWidth (default: 1.5)
   - secondary (default: false) specifies whether the series should plotted to secondary y-axis
 
-**Example**
+**Example:**
   
     init: ->
       ...
@@ -162,7 +162,7 @@ Logs message with specified log level
 #### _ [lodash library]
   The binding to Lodash library (http://lodash.com/) which has many helper functions
   
-**Example**
+**Example:**
 
     debug _.max(instrument.high.splice(-24)) # Prints maximum high for last 24 periods
 
@@ -265,7 +265,7 @@ This method executes a sale of specified asset.
         debug 'SELL order traded'
 
 
-**Advanced orders **
+**Advanced orders**
 
 This set of functions gives more control over how orders are being processed:
 
@@ -289,7 +289,7 @@ The order parameter is an object contaning:
 
 The engine automatically tracks all active orders and peridically update their statuses.
 
-**Example**
+**Example:**
 
     	...
 		stopOrder = mt.addOrder 
@@ -316,6 +316,30 @@ Cancels an order.
 
 #### linkOrder(orderA,orderB)
 Links orders so when one of them is cancelled or closed, the other one will be cancelled automatically.
+
+#### getOrderBook(instrument) (only Live mode)
+
+Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
+
+**Example:**
+
+	# find the price for which 1 BTC can be bought.
+
+    orderBook = mt.getOrderBook instrument
+    volume = 1
+    if orderBook
+        # logs the whole order book
+        for key in ['asks','bids']
+            debug "#{key}: #{orderBook[key].join(',')}"
+        sum = 0
+        for o in orderBook.asks
+            sum += o[1]
+            if sum >= volume
+                debug "#{volume} BTC can be bought for #{o[0]}"
+                break
+    else
+     	debug "orderbook isn't available" 
+Note that in backtesting mode the method returns a null value.
 
    
 
