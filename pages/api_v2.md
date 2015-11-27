@@ -7,16 +7,16 @@ fully featured trading algorithms. Our automated trading platform can backtest a
 
 Each script has to implement the following two methods:
 
-#### init
+##### init
 Initialization method called before trading logic starts. Put any initizalition here.
     
 **Example:**
 
     init: ->
-      @context.treshold = 0.21  
+      context.treshold = 0.21  
       ...  
 
-#### handle
+##### handle
 Called on each tick according to the tick interval that was set (e.g 1 hour)
 
 
@@ -25,7 +25,7 @@ Called on each tick according to the tick interval that was set (e.g 1 hour)
     handle: ->
       ...
       # pick default instrument
-      instrument = @data.instruments[0]
+      instrument = data.instruments[0]
       debug "Price: #{instrument.price}"
 
 
@@ -33,17 +33,17 @@ Called on each tick according to the tick interval that was set (e.g 1 hour)
 
 ### Global data and methods
 
-#### @context
+##### context
 object that holds current script state
 
-#### @data
+##### data
 provides access to current trading environment
-- @data.at - current time in milliseconds
+- data.at - current time in milliseconds
       
-- @data.instruments - array of instrument objects (see Instrument object below). *Currenly only single instrument object is supported*
+- data.instruments - array of instrument objects (see Instrument object below). *Currenly only single instrument object is supported*
  
 
-#### @storage 
+##### storage 
 the object is used to persist variable data in the database that is essential for developing reliable algorithms. In the case if an instance is interrupted unexpectedly, the storage object will be restored from the database to the last state. Do not use to store complex objects such as classes and large amounts for data (> 64kb).
 
 **Example:**
@@ -51,12 +51,12 @@ the object is used to persist variable data in the database that is essential fo
           handle: ->
             ...
             if orderId
-              @storage.lastBuyPrice = instrument.price
+              storage.lastBuyPrice = instrument.price
 
-#### stop
+##### stop
   The method immediately stops script execution and updates the log with the resulting balance.
   
-#### onRestart
+##### onRestart
   This hook method is called upon restart
 
 **Example**
@@ -65,7 +65,7 @@ the object is used to persist variable data in the database that is essential fo
    
       debug "Restart detected"
 
-#### onStop
+##### onStop
 This hook method is called when the bot stops
 
 
@@ -87,22 +87,22 @@ The object that provides access to current trading data and technical indicators
   
 **Example:**
 
-    instrument = @data.instrument[0]
+    instrument = data.instrument[0]
     debug instrument.high[instrument.high.length-1] # Displays current High value
 
-#### market 
+##### market 
   the market/exchange this instrument is traded on
 
-#### period
+##### period
   trading period in minutes 
 
-#### price 
+##### price 
   current price
 
-#### volume
+##### volume
   current volume
 
-#### ticker
+##### ticker
   provides access to live ticker data and has two properties: ticker.buy and ticker.sell
   gets updated each time before handle method is called or after an order is traded
 
@@ -113,13 +113,13 @@ The object that provides access to current trading data and technical indicators
 
 #### Logger
 
-#### debug(msg), info(msg), warn(msg)
+##### debug(msg), info(msg), warn(msg)
 Logs message with specified log level 
 
 #### Plot
 
 
-#### plot(series)
+##### plot(series)
   Records data to be shown on the chart as line graphs. Series is a dictionary object that includes key and value pairs.
 
 **Example:**
@@ -129,7 +129,7 @@ Logs message with specified log level
         short: instrument.ema(10)
         long: instrument.ema(21)
 
-#### plotMark(marks)
+##### plotMark(marks)
   Similar to plot method, but adds a marker that displays events on the charts.
 
 **Example:**
@@ -140,7 +140,7 @@ Logs message with specified log level
           "new high": high
 
 
-#### setPlotOptions(options)
+##### setPlotOptions(options)
   This method allows to configure how series data and markers will be plotted on the chart. Currently the following options are supported:
   
   - color (in HTML format. e.g #eeeeee or 'darkblue')
@@ -179,7 +179,7 @@ Non-core modules shoud be imported using **require** directive before they can b
 
     talib = require 'talib'
     # Calculate SMA(10) using ta-lib API
-    instrument = @data.instruments[0]
+    instrument = data.instruments[0]
     value = talib.SMA
       startIdx: 0 
       endIdx: instrument.close.length-1
@@ -215,7 +215,7 @@ Returns your trading wallet information for margin trading:
     mt = require "bitfinex/margin_trading"
     
     handle: ->
-      instrument = @data.instruments[0]
+      instrument = data.instruments[0]
       info = mt.getMarginInfo instrument
       debug "price: "margin balance: #{info.margin_balance} tradeable balance: #{info.tradable_balance}"
 
@@ -225,7 +225,7 @@ Returns the active position for specified instrument
     mt = require "bitfinex/margin_trading"
     
     handle: ->
-      instrument = @data.instruments[0]
+      instrument = data.instruments[0]
 	  pos = mt.getPosition instrument
       if pos
         debug "position: #{pos.amount} @#{pos.price}"
