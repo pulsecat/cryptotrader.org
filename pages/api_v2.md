@@ -102,9 +102,6 @@ The object that provides access to current trading data and technical indicators
 ##### volume
   current volume
 
-##### ticker
-  provides access to live ticker data and has two properties: ticker.buy and ticker.sell
-  gets updated each time before handle method is called or after an order is traded
 
 
 
@@ -316,6 +313,25 @@ Cancels an order.
 
 ##### linkOrder(orderA,orderB)
 Links orders so when one of them is cancelled or closed, the other one will be cancelled automatically.
+
+##### getTicker(instrument)  (only Live mode)
+
+Returns live ticker data. The object includes two properties: buy and sell that represent current best bid and ask prices respectively.
+In backtesting mode the buy and sell are set to the current price.
+
+**Example:**
+
+    mt = require "bitfinex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+      info = mt.getMarginInfo instrument
+      ## Get best ask price
+      ticker = mt.getTicker instrument
+      bestAskPrice = ticker.sell
+      if mt.buy instrument,info.tradable_balance/instrument.price,bestAskPrice
+        debug 'BUY order traded'
+
 
 ##### getOrderBook(instrument) (only Live mode)
 
