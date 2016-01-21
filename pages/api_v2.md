@@ -230,10 +230,13 @@ Returns the active position for specified instrument
 ##### closePosition(instrument)
 Closes open position
 
-##### buy(instrument,[amount],[price],[timeout])
+##### buy(instrument,type,[amount],[price],[timeout])
 This method executes a purchase of specified asset. 
 
-*timeout* parameter allows to limit the length of time in seconds an order can be outstanding before being canceled. 
+- type - 'stop' or 'limit' or 'market'
+- amount - order amount
+- price - order price
+- timeout - specifies the length of time in seconds an order can be outstanding before being canceled. 
 
 
 **Example:**
@@ -247,7 +250,7 @@ This method executes a purchase of specified asset.
       if mt.buy instrument,info.tradable_balance/instrument.price,instrument.price
         debug 'BUY order traded'
 
-##### sell(instrument,[amount],[price],[timeout])
+##### sell(instrument,type,[amount],[price],[timeout])
 This method executes a sale of specified asset. 
 
 **Example:**
@@ -273,7 +276,7 @@ Submits a new order and returens an object containing information about order
 The order parameter is an object contaning:
 - instrument - current instrument
 - side - order side "buy" or "sell"
-- type - 'stop' or 'limit'
+- type - 'stop' or 'limit' or 'market'
 - amount - order amount
 - price - order price
 
