@@ -1,8 +1,68 @@
+
+Table of Contents
+=================
+
+    * [Overview](#overview)
+    * [Trading API](#trading-api)
+          * [init](#init)
+          * [handle](#handle)
+      * [Global data and methods](#global-data-and-methods)
+          * [context](#context)
+          * [data](#data)
+          * [storage](#storage)
+          * [stop](#stop)
+          * [onRestart](#onrestart)
+          * [onStop](#onstop)
+      * [Instrument object](#instrument-object)
+          * [market](#market)
+          * [period](#period)
+          * [price](#price)
+          * [volume](#volume)
+      * [Core Modules](#core-modules)
+        * [Logger](#logger)
+          * [debug(msg), info(msg), warn(msg)](#debugmsg-infomsg-warnmsg)
+        * [Plot](#plot)
+          * [plot(series)](#plotseries)
+          * [plotMark(marks)](#plotmarkmarks)
+          * [setPlotOptions(options)](#setplotoptionsoptions)
+        * [_ [lodash library]](#_-lodash-library)
+      * [Modules](#modules)
+        * [Ta-lib](#ta-lib)
+        * [Params](#params)
+          * [add title, defaultValue](#add-title-defaultvalue)
+        * [Trading (trading)](#trading-trading)
+          * [Portfolio object](#portfolio-object)
+          * [buy(instrument,type,[amount],[price],[timeout])](#buyinstrumenttypeamountpricetimeout)
+          * [sell(instrument,type,[amount],[price],[timeout])](#sellinstrumenttypeamountpricetimeout)
+          * [addOrder(order)](#addorderorder)
+          * [getActiveOrders](#getactiveorders)
+          * [getOrder(orderId)](#getorderorderid)
+          * [cancelOrder(order)](#cancelorderorder)
+          * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode)
+          * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode)
+        * [Bitfinex Margin Trading (bitfinex/margin_trading)](#bitfinex-margin-trading-bitfinexmargin_trading)
+          * [getMarginInfo(instrument)](#getmargininfoinstrument)
+          * [getPosition(instrument)](#getpositioninstrument)
+          * [closePosition(instrument)](#closepositioninstrument)
+          * [buy(instrument,type,[amount],[price],[timeout])](#buyinstrumenttypeamountpricetimeout-1)
+          * [sell(instrument,type,[amount],[price],[timeout])](#sellinstrumenttypeamountpricetimeout-1)
+          * [addOrder(order)](#addorderorder-1)
+          * [getActiveOrders](#getactiveorders-1)
+          * [getOrder(orderId)](#getorderorderid-1)
+          * [cancelOrder(order)](#cancelorderorder-1)
+          * [linkOrder(orderA,orderB)](#linkorderorderaorderb)
+          * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode-1)
+          * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode-1)
+
+
+
 ## Overview
 Welcome to **Cryptotrader.org API**. We aim to provide an API that allows developers to write 
 fully featured trading algorithms. Our automated trading platform can backtest and execute trading scripts coded in CoffeeScript on historical data.
 
 
+
+---
 ## Trading API
 
 Each script has to implement the following two methods:
@@ -107,12 +167,14 @@ The object that provides access to current trading data and technical indicators
 
 
 ### Core Modules 
+---
 
 #### Logger
 
 ##### debug(msg), info(msg), warn(msg)
 Logs message with specified log level 
 
+---
 #### Plot
 
 
@@ -154,7 +216,7 @@ Logs message with specified log level
         EMA:
           color: 'deeppink'
           lineWidth: 5
-
+---
 
 #### _ [lodash library]
   The binding to Lodash library (http://lodash.com/) which has many helper functions
@@ -166,6 +228,8 @@ Logs message with specified log level
 ### Modules 
 
 Non-core modules shoud be imported using **require** directive before they can be used.
+
+---
 
 #### Ta-lib
   The interface to Ta-lib library (http://ta-lib.org/), which contains 125+ indicators for technical analysis.
@@ -183,6 +247,8 @@ Non-core modules shoud be imported using **require** directive before they can b
       inReal: instrument.close
       optInTimePeriod: 10
       
+---
+      
 
 #### Params 
 The module allows to create bots that take user input at runtime.
@@ -196,6 +262,160 @@ In order to pass parameters to your strategy, put **add** method call to the top
     STOP_LOSS = params.add 'Stop Loss',100 # default value is 100
     MARKET_ORDER = params.add 'Market Order',false # will be displayed as checkbox
     MODE = params.add 'a) Low risk b) Aggressive','a' # can be a string value
+    
+---
+
+#### Trading (trading)
+
+Provides an interface to base trading on any exchage supported by the platform
+
+##### Portfolio object
+The portfolio object gives access to information about funds on the exchange. During live trading this data gets updated automatically before handle method is called and after orders are traded.
+
+**Example:**
+       
+    trading = require "trading"
+    
+    handle: ->
+      instrument = @data.instruments[0]
+      info "Cash: #{@portfolio.positions[instrument.curr()].amount"
+      info "Assets: #{@portfolio.positions[instrument.asset()].amount"
+
+
+
+
+
+##### buy(instrument,type,[amount],[price],[timeout])
+This method executes a purchase of specified asset. 
+
+- type - 'limit' or 'market'
+- amount - order amount
+- price - order price
+- timeout - specifies the length of time in seconds an order can be outstanding before being canceled. 
+
+
+**Example:**
+
+    trading = require "trading"
+    
+    handle: ->
+      instrument = @data.instruments[0]
+      cash = @portfolio.positions[instrument.curr()].amount
+      #  1/2 of cash
+      if trading.buy instrument, 'limit', cash / 2 / instrument.price, instrument.price
+        debug 'BUY order traded'
+
+##### sell(instrument,type,[amount],[price],[timeout])
+This method executes a sale of specified asset. 
+
+**Example:**
+
+    trading = require "trading"
+    
+    handle: ->
+      instrument = @data.instruments[0]
+      # check if 
+      if @portfolio.positions[instrument.asset()].amount > 0
+        if trading.sell instrument
+          debug 'SELL order traded'
+
+
+**Advanced orders**
+
+This set of functions gives more control over how orders are being processed:
+
+##### addOrder(order)
+
+Submits a new order and returens an object containing information about order
+
+The order parameter is an object contaning:
+- instrument - current instrument
+- side - order side "buy" or "sell"
+- type - 'stop' or 'limit' or 'market'
+- amount - order amount
+- price - order price
+
+**Returns:**
+
+- id - unique orderId. Note that id can be missing if the order was filled instantly.
+- active - true if the order is still active
+- cancelled - true if the order was cancelled
+- filled - true if the order was traded
+
+The engine automatically tracks all active orders and peridically update their statuses.
+
+**Example:**
+
+    	...
+		order = trading.addOrder 
+  		instrument: instrument
+  		side: 'buy'
+  		type: 'limit'
+  		amount: amount
+  		price: instrument.price * 1.05
+        if order.id
+        	debug "Order Id: #{order.id}"
+        else
+        	debug "Order fulfilled"
+
+##### getActiveOrders
+Returns the list of currently open orders
+
+##### getOrder(orderId)
+
+Returns an order object by given id.
+
+##### cancelOrder(order)
+
+Cancels an order.
+
+##### getTicker(instrument)  (only Live mode)
+
+Returns live ticker data. The object includes two properties: buy and sell that represent current best bid and ask prices respectively.
+In backtesting mode the buy and sell are set to the current price.
+
+**Example:**
+
+    mt = require "bitfinex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+      info = mt.getMarginInfo instrument
+      ## Get best ask price
+      ticker = mt.getTicker instrument
+      bestAskPrice = ticker.sell
+      if mt.buy instrument,info.tradable_balance/instrument.price,bestAskPrice
+        debug 'BUY order traded'
+
+
+##### getOrderBook(instrument) (only Live mode)
+
+Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
+
+**Example:**
+
+	# find the price for which 1 BTC can be bought.
+
+    orderBook = trading.getOrderBook instrument
+    volume = 1
+    if orderBook
+        # logs the whole order book
+        for key in ['asks','bids']
+            debug "#{key}: #{orderBook[key].join(',')}"
+        sum = 0
+        for o in orderBook.asks
+            sum += o[1]
+            if sum >= volume
+                debug "#{volume} BTC can be bought for #{o[0]}"
+                break
+    else
+     	debug "orderbook isn't available" 
+Note that in backtesting mode the method returns a null value.
+
+
+
+---
+
 
 
 #### Bitfinex Margin Trading (bitfinex/margin_trading)
