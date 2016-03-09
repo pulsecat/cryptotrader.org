@@ -10,6 +10,7 @@ Table of Contents
           * [context](#context)
           * [data](#data)
           * [storage](#storage)
+          * [sleep(ms)](#sleepms)
           * [stop](#stop)
           * [onRestart](#onrestart)
           * [onStop](#onstop)
@@ -53,8 +54,18 @@ Table of Contents
           * [linkOrder(orderA,orderB)](#linkorderorderaorderb)
           * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode-1)
           * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode-1)
-
-
+        * [Poloniex Margin Trading (poloniex/margin_trading)](#poloniex-margin-trading-poloniexmargin_trading)
+          * [getMarginInfo(instrument)](#getmargininfoinstrument-1)
+          * [getPosition(instrument)](#getpositioninstrument-1)
+          * [closePosition(instrument)](#closepositioninstrument-1)
+          * [buy(instrument,type,[amount],[price],[timeout])](#buyinstrumenttypeamountpricetimeout-2)
+          * [sell(instrument,type,[amount],[price],[timeout])](#sellinstrumenttypeamountpricetimeout-2)
+          * [addOrder(order)](#addorderorder-2)
+          * [getActiveOrders](#getactiveorders-2)
+          * [getOrder(orderId)](#getorderorderid-2)
+          * [cancelOrder(order)](#cancelorderorder-2)
+          * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode-2)
+          * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode-2)
 
 ## Overview
 Welcome to **Cryptotrader.org API**. We aim to provide an API that allows developers to write 
@@ -112,6 +123,9 @@ the object is used to persist variable data in the database that is essential fo
             ...
             if orderId
               storage.lastBuyPrice = instrument.price
+
+##### sleep(ms)
+  Pauses code execution for specified number of milliseconds	
 
 ##### stop
   The method immediately stops script execution and updates the log with the resulting balance.
@@ -580,7 +594,169 @@ Allows to access market depth data for current market. The function returns an o
      	debug "orderbook isn't available" 
 Note that in backtesting mode the method returns a null value.
 
-   
+
+---
+
+
+#### Poloniex Margin Trading (poloniex/margin_trading)
+
+This module enables leveraged trading on Poloniex
+
+##### getMarginInfo(instrument)
+Returns your trading wallet information for margin trading:
+- margin_balance - the BTC value of all your trading assets
+- tradable_balance - Your tradable balance in BTC (the maximum size you can open on leverage for this pair)
+
+**Example:**
+
+    mt = require "poloniex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+      info = mt.getMarginInfo instrument
+      debug "price: "margin balance: #{info.margin_balance} tradeable balance: #{info.tradable_balance}"
+
+##### getPosition(instrument)
+Returns the active position for specified instrument 
+
+    mt = require "poloniex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+	  pos = mt.getPosition instrument
+      if pos
+        debug "position: #{pos.amount} @#{pos.price}"
+
+##### closePosition(instrument)
+Closes open position
+
+##### buy(instrument,type,[amount],[price],[timeout])
+This method executes a purchase of specified asset. 
+
+- type - 'limit'
+- amount - order amount
+- price - order price
+- timeout - specifies the length of time in seconds an order can be outstanding before being canceled. 
+
+
+**Example:**
+
+    mt = require "poloniex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+      info = mt.getMarginInfo instrument
+      ## Open long position 
+      if mt.buy instrument,info.tradable_balance/instrument.price,instrument.price
+        debug 'BUY order traded'
+
+##### sell(instrument,type,[amount],[price],[timeout])
+This method executes a sale of specified asset. 
+
+**Example:**
+
+    mt = require "poloniex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+      info = mt.getMarginInfo instrument
+      ## Open short position 
+      if mt.sell instrument,info.tradable_balance/instrument.price,instrument.price
+        debug 'SELL order traded'
+
+
+**Advanced orders**
+
+This set of functions gives more control over how orders are being processed:
+
+##### addOrder(order)
+
+Submits a new order and returens an object containing information about order
+
+The order parameter is an object contaning:
+- instrument - current instrument
+- side - order side "buy" or "sell"
+- type - 'limit' 
+- amount - order amount
+- price - order price
+
+**Returns:**
+
+- id - unique orderId. Note that id can be missing if the order was filled instantly.
+- active - true if the order is still active
+- cancelled - true if the order was cancelled
+- filled - true if the order was traded
+
+The engine automatically tracks all active orders and peridically update their statuses.
+
+**Example:**
+
+    	...
+		stopOrder = mt.addOrder 
+  		instrument: instrument
+  		side: 'buy'
+  		type: 'limit'
+  		amount: amount
+  		price: instrument.price * 1.05
+        if order.id
+        	debug "Order Id: #{stopOrder.id}"
+        else
+        	debug "Order fulfilled"
+
+##### getActiveOrders
+Returns the list of currently open orders
+
+##### getOrder(orderId)
+
+Returns an order object by given id.
+
+##### cancelOrder(order)
+
+Cancels an order.
+
+##### getTicker(instrument)  (only Live mode)
+
+Returns live ticker data. The object includes two properties: buy and sell that represent current best bid and ask prices respectively.
+In backtesting mode the buy and sell are set to the current price.
+
+**Example:**
+
+    mt = require "poloniex/margin_trading"
+    
+    handle: ->
+      instrument = data.instruments[0]
+      info = mt.getMarginInfo instrument
+      ## Get best ask price
+      ticker = mt.getTicker instrument
+      bestAskPrice = ticker.sell
+      if mt.buy instrument,info.tradable_balance/instrument.price,bestAskPrice
+        debug 'BUY order traded'
+
+
+##### getOrderBook(instrument) (only Live mode)
+
+Allows to access market depth data for current market. The function returns an object that contains 'asks' and 'bids' fields, each of which is an array of [price,amount] elements representing orders in the orderbook.
+
+**Example:**
+
+	# find the price for which 1 BTC can be bought.
+
+    orderBook = mt.getOrderBook instrument
+    volume = 1
+    if orderBook
+        # logs the whole order book
+        for key in ['asks','bids']
+            debug "#{key}: #{orderBook[key].join(',')}"
+        sum = 0
+        for o in orderBook.asks
+            sum += o[1]
+            if sum >= volume
+                debug "#{volume} BTC can be bought for #{o[0]}"
+                break
+    else
+     	debug "orderbook isn't available" 
+Note that in backtesting mode the method returns a null value.
+
 
 
 
