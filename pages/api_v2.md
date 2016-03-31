@@ -1,71 +1,23 @@
-
 Table of Contents
 =================
 
-    * [Overview](#overview)
-    * [Trading API](#trading-api)
-          * [init](#init)
-          * [handle](#handle)
-      * [Global data and methods](#global-data-and-methods)
-          * [context](#context)
-          * [data](#data)
-          * [storage](#storage)
-          * [sleep(ms)](#sleepms)
-          * [stop](#stop)
-          * [onRestart](#onrestart)
-          * [onStop](#onstop)
-      * [Instrument object](#instrument-object)
-          * [market](#market)
-          * [period](#period)
-          * [price](#price)
-          * [volume](#volume)
-      * [Core Modules](#core-modules)
-        * [Logger](#logger)
-          * [debug(msg), info(msg), warn(msg)](#debugmsg-infomsg-warnmsg)
-        * [Plot](#plot)
-          * [plot(series)](#plotseries)
-          * [plotMark(marks)](#plotmarkmarks)
-          * [setPlotOptions(options)](#setplotoptionsoptions)
-        * [_ [lodash library]](#_-lodash-library)
-      * [Modules](#modules)
-        * [Ta-lib](#ta-lib)
-        * [Params](#params)
-          * [add title, defaultValue](#add-title-defaultvalue)
-        * [Trading (trading)](#trading-trading)
-          * [Portfolio object](#portfolio-object)
-          * [buy(instrument,type,[amount],[price],[timeout])](#buyinstrumenttypeamountpricetimeout)
-          * [sell(instrument,type,[amount],[price],[timeout])](#sellinstrumenttypeamountpricetimeout)
-          * [addOrder(order)](#addorderorder)
-          * [getActiveOrders](#getactiveorders)
-          * [getOrder(orderId)](#getorderorderid)
-          * [cancelOrder(order)](#cancelorderorder)
-          * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode)
-          * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode)
-        * [Bitfinex Margin Trading (bitfinex/margin_trading)](#bitfinex-margin-trading-bitfinexmargin_trading)
-          * [getMarginInfo(instrument)](#getmargininfoinstrument)
-          * [getPosition(instrument)](#getpositioninstrument)
-          * [closePosition(instrument)](#closepositioninstrument)
-          * [buy(instrument,type,[amount],[price],[timeout])](#buyinstrumenttypeamountpricetimeout-1)
-          * [sell(instrument,type,[amount],[price],[timeout])](#sellinstrumenttypeamountpricetimeout-1)
-          * [addOrder(order)](#addorderorder-1)
-          * [getActiveOrders](#getactiveorders-1)
-          * [getOrder(orderId)](#getorderorderid-1)
-          * [cancelOrder(order)](#cancelorderorder-1)
-          * [linkOrder(orderA,orderB)](#linkorderorderaorderb)
-          * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode-1)
-          * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode-1)
-        * [Poloniex Margin Trading (poloniex/margin_trading)](#poloniex-margin-trading-poloniexmargin_trading)
-          * [getMarginInfo(instrument)](#getmargininfoinstrument-1)
-          * [getPosition(instrument)](#getpositioninstrument-1)
-          * [closePosition(instrument)](#closepositioninstrument-1)
-          * [buy(instrument,type,[amount],[price],[timeout])](#buyinstrumenttypeamountpricetimeout-2)
-          * [sell(instrument,type,[amount],[price],[timeout])](#sellinstrumenttypeamountpricetimeout-2)
-          * [addOrder(order)](#addorderorder-2)
-          * [getActiveOrders](#getactiveorders-2)
-          * [getOrder(orderId)](#getorderorderid-2)
-          * [cancelOrder(order)](#cancelorderorder-2)
-          * [getTicker(instrument)  (only Live mode)](#gettickerinstrument--only-live-mode-2)
-          * [getOrderBook(instrument) (only Live mode)](#getorderbookinstrument-only-live-mode-2)
+* [Overview](#overview)
+* [Trading API](#trading-api)
+  * [Code Structure](#code-structure)
+  * [Global data and methods](#global-data-and-methods)
+  * [Instrument object](#instrument-object)
+  * [Core Modules](#core-modules)
+    * [Logger](#logger)
+    * [Plot](#plot)
+    * [_ [lodash library]](#_-lodash-library)
+  * [Modules](#modules)
+    * [Ta-lib](#ta-lib)
+    * [Params](#params)
+    * [Trading (trading)](#trading-trading)
+    * [Bitfinex Margin Trading](#bitfinex-margin-trading)
+    * [Poloniex Margin Trading](#poloniex-margin-trading)
+
+
 
 ## Overview
 Welcome to **Cryptotrader.org API**. We aim to provide an API that allows developers to write 
@@ -77,6 +29,8 @@ fully featured trading algorithms. Our automated trading platform can backtest a
 ## Trading API
 
 Each script has to implement the following two methods:
+
+### Code Structure
 
 ##### init
 Initialization method called before trading logic starts. Put any initizalition here.
@@ -167,8 +121,8 @@ The object that provides access to current trading data and technical indicators
 ##### market 
   the market/exchange this instrument is traded on
 
-##### period
-  trading period in minutes 
+##### interval
+  trading interval in minutes 
 
 ##### price 
   current price
@@ -372,7 +326,7 @@ The engine automatically tracks all active orders and peridically update their s
         else
         	debug "Order fulfilled"
 
-##### getActiveOrders
+##### getActiveOrders()
 Returns the list of currently open orders
 
 ##### getOrder(orderId)
@@ -432,7 +386,7 @@ Note that in backtesting mode the method returns a null value.
 
 
 
-#### Bitfinex Margin Trading (bitfinex/margin_trading)
+#### Bitfinex Margin Trading
 
 This module enables leveraged trading on Bitfinex
 
@@ -537,7 +491,7 @@ The engine automatically tracks all active orders and peridically update their s
         else
         	debug "Order fulfilled"
 
-##### getActiveOrders
+##### getActiveOrders()
 Returns the list of currently open orders
 
 ##### getOrder(orderId)
@@ -598,7 +552,7 @@ Note that in backtesting mode the method returns a null value.
 ---
 
 
-#### Poloniex Margin Trading (poloniex/margin_trading)
+#### Poloniex Margin Trading 
 
 This module enables leveraged trading on Poloniex
 
@@ -703,7 +657,7 @@ The engine automatically tracks all active orders and peridically update their s
         else
         	debug "Order fulfilled"
 
-##### getActiveOrders
+##### getActiveOrders()
 Returns the list of currently open orders
 
 ##### getOrder(orderId)
