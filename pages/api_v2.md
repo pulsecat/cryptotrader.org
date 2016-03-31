@@ -13,7 +13,7 @@ Table of Contents
   * [Modules](#modules)
     * [Ta-lib](#ta-lib)
     * [Params](#params)
-    * [Trading (trading)](#trading-trading)
+    * [Trading](#trading)
     * [Bitfinex Margin Trading](#bitfinex-margin-trading)
     * [Poloniex Margin Trading](#poloniex-margin-trading)
 
@@ -233,7 +233,7 @@ In order to pass parameters to your strategy, put **add** method call to the top
     
 ---
 
-#### Trading (trading)
+#### Trading
 
 Provides an interface to base trading on any exchage supported by the platform
 
