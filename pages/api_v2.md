@@ -1,21 +1,22 @@
 Table of Contents
 =================
 
-* [Overview](#overview)
-* [Trading API](#trading-api)
-  * [Code Structure](#code-structure)
-  * [Global data and methods](#global-data-and-methods)
-  * [Instrument object](#instrument-object)
-  * [Core Modules](#core-modules)
-    * [Logger](#logger)
-    * [Plot](#plot)
-    * [_ [lodash library]](#_-lodash-library)
-  * [Modules](#modules)
-    * [Ta-lib](#ta-lib)
-    * [Params](#params)
-    * [Trading](#trading)
-    * [Bitfinex Margin Trading](#bitfinex-margin-trading)
-    * [Poloniex Margin Trading](#poloniex-margin-trading)
+* [Table of Contents](#table-of-contents)
+  * [Overview](#overview)
+  * [Trading API](#trading-api)
+    * [Code Structure](#code-structure)
+    * [Global data and methods](#global-data-and-methods)
+    * [Instrument object](#instrument-object)
+    * [Core Modules](#core-modules)
+      * [Logger](#logger)
+      * [Plot](#plot)
+      * [Lodash library](#lodash-library)
+    * [Modules](#modules)
+      * [Ta-lib](#ta-lib)
+      * [Params](#params)
+      * [Trading](#trading)
+      * [Bitfinex Margin Trading](#bitfinex-margin-trading)
+      * [Poloniex Margin Trading](#poloniex-margin-trading)
 
 
 
@@ -186,7 +187,7 @@ Logs message with specified log level
           lineWidth: 5
 ---
 
-#### _ [lodash library]
+#### Lodash library
   The binding to Lodash library (http://lodash.com/) which has many helper functions
   
 **Example:**
