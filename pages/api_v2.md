@@ -28,10 +28,8 @@ fully featured trading algorithms. Our automated trading platform can backtest a
 ---
 ## Trading API
 
-Each script has to implement the following two methods:
-
 ### Code Structure
-
+Each script has to implement the following two methods:
 ##### init
 Initialization method called before trading logic starts. Put any initizalition here.
     
