@@ -1,7 +1,6 @@
 Table of Contents
 =================
 
-* [Table of Contents](#table-of-contents)
   * [Overview](#overview)
   * [Trading API](#trading-api)
     * [Code Structure](#code-structure)
