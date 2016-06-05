@@ -244,8 +244,8 @@ The portfolio object gives access to information about funds on the exchange. Du
     
     handle: ->
       instrument = @data.instruments[0]
-      info "Cash: #{@portfolio.positions[instrument.curr()].amount"
-      info "Assets: #{@portfolio.positions[instrument.asset()].amount"
+      info "Cash: #{@portfolio.positions[instrument.curr()].amount}"
+      info "Assets: #{@portfolio.positions[instrument.asset()].amount}"
 
 
 
