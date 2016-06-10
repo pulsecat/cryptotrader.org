@@ -484,7 +484,7 @@ The engine automatically tracks all active orders and peridically update their s
   		type: 'stop'
   		amount: amount
   		price: instrument.price * 1.05
-        if order.id
+        if stopOrder.id
         	debug "Order Id: #{stopOrder.id}"
         else
         	debug "Order fulfilled"
@@ -650,7 +650,7 @@ The engine automatically tracks all active orders and peridically update their s
   		type: 'limit'
   		amount: amount
   		price: instrument.price * 1.05
-        if order.id
+        if stopOrder.id
         	debug "Order Id: #{stopOrder.id}"
         else
         	debug "Order fulfilled"
