@@ -9,6 +9,7 @@ Table of Contents
     * [Core Modules](#core-modules)
       * [Logger](#logger)
       * [Plot](#plot)
+      * [Alerts](#alerts)
       * [Lodash library](#lodash-library)
     * [Modules](#modules)
       * [Ta-lib](#ta-lib)
@@ -182,6 +183,23 @@ Logs message with specified log level
         EMA:
           color: 'deeppink'
           lineWidth: 5
+
+---
+#### Alerts
+
+
+##### sendEmail(text) [only Live mode]
+
+Sends an email message to your e-mail. An e-mail address must be valid and verified.
+
+**Example:**
+
+	# simple price alert
+	handle: ->
+	  ...
+	  if @data.instruments[0].price >= 100
+	    sendEmail 'The price hit $100'
+	  
 ---
 
 #### Lodash library
