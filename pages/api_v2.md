@@ -15,6 +15,7 @@ Table of Contents
       * [Ta-lib](#ta-lib)
       * [Params](#params)
       * [Trading](#trading)
+      * [Datasources](#datasources)
       * [Bitfinex Margin Trading](#bitfinex-margin-trading)
       * [Poloniex Margin Trading](#poloniex-margin-trading)
 
@@ -56,6 +57,13 @@ Called on each tick according to the tick interval that was set (e.g 1 hour)
 
 
 ### Global data and methods
+
+##### @config
+global object that contains an instance configration
+
+  - market - primary market on which the instance currently running on 
+  - pair - primary instrument pair 
+  - interval - primary interval
 
 ##### context
 object that holds current script state
@@ -253,8 +261,10 @@ In order to pass parameters to your strategy, put **add** method call to the top
 
 Provides an interface to base trading on any exchage supported by the platform
 
-##### Portfolio object
-The portfolio object gives access to information about funds on the exchange. During live trading this data gets updated automatically before handle method is called and after orders are traded.
+##### Portfolios object
+The **portfolios** object gives access to information about funds on all exchanges the algorithm has access to. During live trading this data gets updated automatically before handle method is called and after orders are traded.
+**@portfolio** is a link to primary markets's portfolio 
+  
 
 **Example:**
        
@@ -262,8 +272,8 @@ The portfolio object gives access to information about funds on the exchange. Du
     
     handle: ->
       instrument = @data.instruments[0]
-      info "Cash: #{@portfolio.positions[instrument.curr()].amount"
-      info "Assets: #{@portfolio.positions[instrument.asset()].amount"
+      info "Cash: #{@portfolios[instrument.market].positions[instrument.curr()].amount"
+      info "Assets: #{@portfolios[instrument.market].positions[instrument.asset()].amount"
 
 
 
@@ -567,6 +577,52 @@ Note that in backtesting mode the method returns a null value.
 
 ---
 
+#### Datasources 
+
+Enables access to up to 5 additional trading instruments on different markets and trading intervals. The primary instrument, which the instance is running on, is added by default and always the first element in @data.instruments array and not needed to be added explicitly.
+
+
+#####add(market, pair, interval, size=100)
+
+Adds and returns a new instrument object that will be preloaded with *size* ticks (up to 500) upon the initialization of the program. This method can be used only at the top level of the script.
+Currently, up to 5 additional instruments are allowed.
+
+#####get(market, pair, interval)
+
+Gets the instrument object with specified configuration that was added at the initialization stage
+
+**Example: **
+
+	trading = require 'trading'
+	ds  = require 'datasources'
+
+	ds.add 'poloniex', 'xmr_btc', '1h'
+	ds.add 'poloniex', 'eth_btc', '4h'
+	ds.add 'poloniex', 'eth_btc', '1d'
+
+	TIMEOUT = 60
+
+
+	 
+	handle: ->
+	    eth = ds.get 'poloniex', 'eth_btc', 5 # primary instrument
+	    xmr = ds.get 'poloniex', 'xmr_btc', '1h'
+	    eth4h = ds.get 'poloniex', 'eth_btc', '4h'
+	
+	    for ins in @data.instruments
+	        debug "#{ins.id}: price #{ins.price} volume: #{ins.volume}"
+
+	    xmrTicker = trading.getTicker xmr
+	    xmrAmount = @portfolios.poloniex.positions.xmr.amount
+	    unless xmrAmount > 0.1
+	  	    trading.addOrder 
+		        instrument: xmr
+		        type: 'limit'
+		        side: 'buy'
+		        amount: 1
+		        price: xmrTicker.buy
+		        timeout: TIMEOUT
+---
 
 #### Poloniex Margin Trading 
 
