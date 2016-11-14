@@ -424,7 +424,7 @@ Currently, up to 5 additional instruments are allowed.
 
 Gets the instrument object with specified configuration that was added at the initialization stage
 
-**Example: **
+**Example:**
 
 	trading = require 'trading'
 	ds  = require 'datasources'
