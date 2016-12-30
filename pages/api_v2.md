@@ -369,15 +369,14 @@ In backtesting mode the buy and sell are set to the current price.
 
 **Example:**
 
-    mt = require "bitfinex/margin_trading"
+    trading = require "trading"
     
     handle: ->
       instrument = data.instruments[0]
-      info = mt.getMarginInfo instrument
       ## Get best ask price
-      ticker = mt.getTicker instrument
+      ticker = trading.getTicker instrument
       bestAskPrice = ticker.sell
-      if mt.buy instrument,info.tradable_balance/instrument.price,bestAskPrice
+      if trading.buy instrument,@portfolio.positions[instrument.curr()].amount / instrument.price,instrument.price,bestAskPrice
         debug 'BUY order traded'
 
 
