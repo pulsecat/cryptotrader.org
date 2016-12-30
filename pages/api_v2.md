@@ -319,7 +319,7 @@ This set of functions gives more control over how orders are being processed:
 
 ##### addOrder(order)
 
-Submits a new order and returens an object containing information about order
+Submits a new order and returns an object containing information about order
 
 The order parameter is an object contaning:
 - instrument - current instrument
@@ -530,7 +530,7 @@ This set of functions gives more control over how orders are being processed:
 
 ##### addOrder(order)
 
-Submits a new order and returens an object containing information about order
+Submits a new order and returns an object containing information about order
 
 The order parameter is an object contaning:
 - instrument - current instrument
@@ -557,7 +557,7 @@ The engine automatically tracks all active orders and peridically update their s
   		type: 'limit'
   		amount: amount
   		price: instrument.price * 1.05
-        if order.id
+        if stopOrder.id
         	debug "Order Id: #{stopOrder.id}"
         else
         	debug "Order fulfilled"
