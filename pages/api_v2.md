@@ -320,7 +320,7 @@ This set of functions gives more control over how orders are being processed:
 
 ##### addOrder(order)
 
-Submits a new order and returens an object containing information about order
+Submits a new order and returns an object containing information about order
 
 The order parameter is an object contaning:
 - instrument - current instrument
@@ -530,7 +530,7 @@ This set of functions gives more control over how orders are being processed:
 
 ##### addOrder(order)
 
-Submits a new order and returens an object containing information about order
+Submits a new order and returns an object containing information about order
 
 The order parameter is an object contaning:
 - instrument - current instrument
@@ -697,7 +697,7 @@ This set of functions gives more control over how orders are being processed:
 
 ##### addOrder(order)
 
-Submits a new order and returens an object containing information about order
+Submits a new order and returns an object containing information about order
 
 The order parameter is an object contaning:
 - instrument - current instrument
