@@ -573,7 +573,7 @@ Returns an order object by given id.
 
 Cancels an order.
 
-##### linkOrder(orderA,orderB)
+##### linkOrders(orderA,orderB)
 Links orders so when one of them is cancelled or closed, the other one will be cancelled automatically.
 
 ##### getTicker(instrument)  (only Live mode)
