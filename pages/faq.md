@@ -19,6 +19,11 @@ We do not hold your funds or have access to them. Trades are placed on your beha
 #### How can I make sure my funds are safe?
 
 Bots connect to your exchange account through API keys that do not have permission to withdraw funds.
+
+##Running bots
+#### Is it a problem that two bots are running on the same exchange account?
+It is not recommended to run two bots on the same account as they will compete for funds. Some exchanges (Poloniex, Bitstamp) allow to create sub accounts and link them to primary account.
+
 ##Strategy Market
 #### What is strategy popularity?
   The strategy rating is a relative number representing number of live instances that currently trade with this particular strategy for real money. E.g a strategy with rating 50% is being rented twice less often than a strategy with 100% rating.
