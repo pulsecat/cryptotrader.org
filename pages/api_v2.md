@@ -249,11 +249,18 @@ The module allows to create bots that take user input at runtime.
 In order to pass parameters to your strategy, put **add** method call to the top of the code, like in the example below:
 
 
-	params = require 'params
+	params = require 'params'
     STOP_LOSS = params.add 'Stop Loss',100 # default value is 100
     MARKET_ORDER = params.add 'Market Order',false # will be displayed as checkbox
     MODE = params.add 'a) Low risk b) Aggressive','a' # can be a string value
     
+##### addOptions title, options, defaultValue
+
+Adds selection of options
+
+
+	params = require 'params'
+    ORDER_TYPE = params.addOptions 'Order type',['Market','Limit','Iceberg'],'Limit' # default value is 'Limit'
 ---
 
 #### Trading
