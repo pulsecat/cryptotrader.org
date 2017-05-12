@@ -254,9 +254,10 @@ In order to pass parameters to your strategy, put **add** method call to the top
     MARKET_ORDER = params.add 'Market Order',false # will be displayed as checkbox
     MODE = params.add 'a) Low risk b) Aggressive','a' # can be a string value
     
+    
 ##### addOptions title, options, defaultValue
 
-Adds selection of options
+Adds a control that provides a menu of options
 
 
 	params = require 'params'
