@@ -136,7 +136,12 @@ The object that provides access to current trading data and technical indicators
 ##### volume
   current volume
 
+##### asset()
+  the method returns the instrument asset 
 
+
+##### base()
+  the method returns the instrument base
 
 
 
@@ -279,7 +284,7 @@ The **portfolios** object gives access to information about funds on all exchang
     
     handle: ->
       instrument = @data.instruments[0]
-      info "Cash: #{@portfolios[instrument.market].positions[instrument.curr()].amount"
+      info "Cash: #{@portfolios[instrument.market].positions[instrument.base()].amount"
       info "Assets: #{@portfolios[instrument.market].positions[instrument.asset()].amount"
 
 
@@ -301,7 +306,7 @@ This method executes a purchase of specified asset.
     
     handle: ->
       instrument = @data.instruments[0]
-      cash = @portfolio.positions[instrument.curr()].amount
+      cash = @portfolio.positions[instrument.base()].amount
       #  1/2 of cash
       if trading.buy instrument, 'limit', cash / 2 / instrument.price, instrument.price
         debug 'BUY order traded'
@@ -384,7 +389,7 @@ In backtesting mode the buy and sell are set to the current price.
       ## Get best ask price
       ticker = trading.getTicker instrument
       bestAskPrice = ticker.sell
-      if trading.buy instrument,@portfolio.positions[instrument.curr()].amount / instrument.price,instrument.price,bestAskPrice
+      if trading.buy instrument,@portfolio.positions[instrument.base()].amount / instrument.price,instrument.price,bestAskPrice
         debug 'BUY order traded'
 
 
