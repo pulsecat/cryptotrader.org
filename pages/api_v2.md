@@ -331,16 +331,16 @@ The following approach is recommended for handling errors that might occur durin
    
     trading = require "trading"
    
-	handle: ->
-		instrument = @data.instruments[0]
-		try
-			if trading.sell instrument
-				debug 'SELL order traded'  
-		catch e
-			if /insufficient funds/i.exec e
-				debug "Insufficient funds error"
-			else 
-				throw e # rethrow unhandled exception
+    handle: ->
+      instrument = @data.instruments[0]
+      try
+        if trading.sell instrument
+          debug 'SELL order traded'  
+      catch e
+        if /insufficient funds/i.exec e
+          debug "Insufficient funds error"
+        else 
+          throw e # rethrow unhandled exception
 	   
   It's important that an unhandled exception be rethrown. Failing to do so might result in never-ending backtesting session or suppressed errors.
 
