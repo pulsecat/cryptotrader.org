@@ -204,6 +204,8 @@ Logs message with specified log level
 
 Sends an email message to your e-mail. An e-mail address must be valid and verified.
 
+
+
 **Example:**
 
 	# simple price alert
@@ -211,6 +213,18 @@ Sends an email message to your e-mail. An e-mail address must be valid and verif
 	  ...
 	  if @data.instruments[0].price >= 100
 	    sendEmail 'The price hit $100'
+
+##### sendSMS(message) [only Live mode] 
+
+Sends a SMS message to the mobile number specified in the profile settings. The messages are limited to 160 characters.
+
+**Example:**
+	
+	handle: ->
+	  ...
+	  if sell instrument
+	    sendSMS "Order traded"
+
 	  
 ---
 
