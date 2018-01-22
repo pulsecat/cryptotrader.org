@@ -82,7 +82,7 @@ the object is used to persist variable data in the database that is essential fo
           handle: ->
             ...
             if orderId
-              storage.lastBuyPrice = instrument.price
+              @storage.lastBuyPrice = instrument.price
 
 ##### sleep(ms)
   Pauses code execution for specified number of milliseconds	
