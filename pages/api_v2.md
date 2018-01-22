@@ -204,6 +204,8 @@ Logs message with specified log level
 
 Sends an email message to your e-mail. An e-mail address must be valid and verified.
 
+
+
 **Example:**
 
 	# simple price alert
@@ -211,6 +213,18 @@ Sends an email message to your e-mail. An e-mail address must be valid and verif
 	  ...
 	  if @data.instruments[0].price >= 100
 	    sendEmail 'The price hit $100'
+
+##### sendSMS(message) [only Live mode] 
+
+Sends a SMS message to the mobile number specified in the profile settings. The messages are limited to 160 characters.
+
+**Example:**
+	
+	handle: ->
+	  ...
+	  if sell instrument
+	    sendSMS "Order traded"
+
 	  
 ---
 
@@ -324,6 +338,25 @@ This method executes a sale of specified asset.
       if @portfolio.positions[instrument.asset()].amount > 0
         if trading.sell instrument
           debug 'SELL order traded'
+
+**Error handling**
+
+The following approach is recommended for handling errors that might occur during order processing
+   
+    trading = require "trading"
+   
+    handle: ->
+      instrument = @data.instruments[0]
+      try
+        if trading.sell instrument
+          debug 'SELL order traded'  
+      catch e
+        if /insufficient funds/i.exec e
+          debug "Insufficient funds error"
+        else 
+          throw e # rethrow unhandled exception
+	   
+  It's important that an unhandled exception be rethrown. Failing to do so might result in never-ending backtesting session or suppressed errors.
 
 
 **Advanced orders**
