@@ -303,7 +303,14 @@ The **portfolios** object gives access to information about funds on all exchang
 
 
 
+##### getMinimumOrder(instrument)
+Returns an array containing the information about minimum order size for the given instrument
 
+**Example:**
+
+    [minOrder, unit] = trading.getMinimumOrder instrument
+    debug "min order: #{minOrder} unit: #{unit}" # e.g: min order: 0.002 unit: eth
+    trading.buy instrument, 'limit', minOrder
 
 ##### buy(instrument,type,[amount],[price],[timeout])
 This method executes a purchase of specified asset. 
@@ -533,6 +540,9 @@ Returns the active position for specified instrument
 
 ##### closePosition(instrument)
 Closes open position
+
+##### getMinimumOrder(instrument)
+Returns an array containing the information about minimum order size for the given instrument (see Trading.getMinimumOrder)
 
 ##### buy(instrument,type,[amount],[price],[timeout])
 This method executes a purchase of specified asset. 
